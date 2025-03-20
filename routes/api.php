@@ -22,3 +22,7 @@ use Illuminate\Support\Facades\Route;
 // add category
 Route::post('/category/add', [ProductController::class, 'addCategory']);
 Route::get('/products/categories', [ProductController::class, 'getCategory']);
+
+// add product
+Route::post('/product/add', [ProductController::class, 'addProduct']);
+
