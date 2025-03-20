@@ -1,7 +1,7 @@
-## Category ADD Api
+### Category Add Api
 
-### /category/add
+##### /category/add
 
-## Category Get Api
+### Category Get Api
 
-### /category/add
+##### /products/categories
