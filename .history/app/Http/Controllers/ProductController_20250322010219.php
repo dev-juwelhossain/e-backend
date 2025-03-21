@@ -72,25 +72,35 @@ class ProductController extends Controller
     // product update
     public function updateProduct(Request $request, $id)
     {
+        $data = ProductModel::findOrFail($id);
 
-        $data = ProductModel::find($id);
         $data->product_name = $request->product_name;
         $data->select_category = $request->select_category;
         $data->availability = $request->availability;
         $data->regular_price = $request->regular_price;
-        $data->selling_price  = $request->selling_price;
+        $data->selling_price = $request->selling_price;
         $data->product_description = $request->product_description;
+
         if ($request->file('product_image')) {
+            // Delete the old image if it exists
+            if ($data->product_image && file_exists(public_path('admin/product/' . $data->product_image))) {
+                unlink(public_path('admin/product/' . $data->product_image));
+            }
+
+            // Upload new image
             $file = $request->file('product_image');
             $filename = date('Ymdhi') . $file->getClientOriginalName();
             $file->move(public_path('admin/product'), $filename);
-            $data['product_image'] = $filename;
+            $data->product_image = $filename;
         }
 
         $data->save();
-        return response()->json(['message' => 'Product updated successfully']);
-    }
 
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'data' => $data
+        ]);
+    }
     public function deleteProduct($id)
     {
         $data = ProductModel::findOrFail($id);

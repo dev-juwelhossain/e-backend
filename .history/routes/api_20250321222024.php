@@ -28,7 +28,7 @@ Route::get('/products/categories', [ProductController::class, 'getCategory']);
 // add product
 Route::post('/product/add', [ProductController::class, 'addProduct']);
 Route::get('/products', [ProductController::class, 'getProduct']);
-Route::post('/product/update/{id}', [ProductController::class, 'updateProduct']); // Update product
+Route::put('/product/update/{id}', [ProductController::class, 'updateProduct']); // Update product
 Route::delete('/product/delete/{id}', [ProductController::class, 'deleteProduct']); // Delete product
 // get api from category
 Route::get('/products/category/{category}', [ProductController::class, 'getCategoryProduct']);
@@ -38,7 +38,7 @@ Route::get('/order', [ProductController::class, 'getOrder']);
 Route::post('/order/add', [ProductController::class, 'addOrder']);
 // get order by id
 Route::get('/order/{id}', [ProductController::class, 'getOrderById']);
-Route::post('/order/update/{id}', [ProductController::class, 'updateOrder']);
+Route::put('/order/update/{id}', [ProductController::class, 'updateOrder']);
 Route::delete('/order/delete/{id}', [ProductController::class, 'deleteOrder']);
 // order confim by id post request
 Route::post('/order/confirm/{id}', [ProductController::class, 'confirmOrder']);

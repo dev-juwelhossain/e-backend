@@ -72,19 +72,27 @@ class ProductController extends Controller
     // product update
     public function updateProduct(Request $request, $id)
     {
+        /* $request->validate([
+            'product_name' => 'required|string',
+            'select_category' => 'required|string',
+            'availability' => 'required|string',
+            'regular_price' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'product_description' => 'nullable|string',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]); */
 
-        $data = ProductModel::find($id);
-        $data->product_name = $request->product_name;
-        $data->select_category = $request->select_category;
-        $data->availability = $request->availability;
-        $data->regular_price = $request->regular_price;
-        $data->selling_price  = $request->selling_price;
-        $data->product_description = $request->product_description;
-        if ($request->file('product_image')) {
+        $data = ProductModel::findOrFail($id);
+        $data->fill($request->except('product_image'));
+
+        if ($request->hasFile('product_image')) {
+            if ($data->product_image && file_exists(public_path('admin/product/' . $data->product_image))) {
+                unlink(public_path('admin/product/' . $data->product_image));
+            }
             $file = $request->file('product_image');
-            $filename = date('Ymdhi') . $file->getClientOriginalName();
+            $filename = date('YmdHi') . '_' . $file->getClientOriginalName();
             $file->move(public_path('admin/product'), $filename);
-            $data['product_image'] = $filename;
+            $data->product_image = $filename;
         }
 
         $data->save();

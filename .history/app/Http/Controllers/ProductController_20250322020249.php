@@ -70,11 +70,11 @@ class ProductController extends Controller
     }
 
     // product update
-    public function updateProduct(Request $request, $id)
-    {
-
-        $data = ProductModel::find($id);
-        $data->product_name = $request->product_name;
+   public function updateProduct(Request $request, $id)
+{
+    
+    $data = ProductModel::findOrFail($id);
+    $data->product_name = $request->product_name;
         $data->select_category = $request->select_category;
         $data->availability = $request->availability;
         $data->regular_price = $request->regular_price;
@@ -87,9 +87,9 @@ class ProductController extends Controller
             $data['product_image'] = $filename;
         }
 
-        $data->save();
-        return response()->json(['message' => 'Product updated successfully']);
-    }
+    $data->save();
+    return response()->json(['message' => 'Product updated successfully']);
+}
 
     public function deleteProduct($id)
     {
