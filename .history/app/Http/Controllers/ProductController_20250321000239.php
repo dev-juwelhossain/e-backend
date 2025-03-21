@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CategoryModel;
 use App\Models\ProductModel;
-use App\Models\OrderModel;
 
 class ProductController extends Controller
 {
@@ -54,7 +53,7 @@ class ProductController extends Controller
         $data->select_category = $request->select_category;
         $data->availability = $request->availability;
         $data->regular_price = $request->regular_price;
-        $data->selling_price  = $request->selling_price;
+        $data->selling_price = $request->selling_price;
         $data->product_description = $request->product_description;
         if ($request->file('product_image')) {
             $file = $request->file('product_image');
@@ -152,54 +151,43 @@ class ProductController extends Controller
         ]);
     }
 
-    // add order
-    // inout field -> name, email, phone,address, cart array, tatal price , user_id
-    public function addOrder(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        // generate order id
-        $order_id = 'ORD' . rand(1000, 9999);
-        $data = new OrderModel();
-        $data->name = $request->name;
-        $data->email = $request->email;
-        $data->phone = $request->phone;
-        $data->address = $request->address;
-        $data->cart = json_encode($request->cart);
-        $data->total_price = $request->total_price;
-        $data->user_id = $request->user_id;
-        $data->order_id = $order_id;
-        $data->p_method = $request->p_method;
-        $data->save();
-        return response()->json([
-            'message' => 'Created successfully',
-            $data
-        ]);
+        //
     }
-    // get order
-    public function getOrder()
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $data = OrderModel::all();
-        // cart should be json
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
-        return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
-        ]);
+        //
     }
-    // get order by id
-    public function getOrderById($id)
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        // make it group by user id
-        $data = OrderModel::where('user_id', $id)->get();
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
-        return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
-        ]);
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

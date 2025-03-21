@@ -191,15 +191,24 @@ class ProductController extends Controller
     // get order by id
     public function getOrderById($id)
     {
-        // make it group by user id
-        $data = OrderModel::where('user_id', $id)->get();
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
+        // Retrieve orders for the given user ID, group by 'id', and order them in descending order
+        $data = OrderModel::where('user_id', $id)
+            ->orderBy('id', 'desc') // Order by ID
+            ->get()
+            ->groupBy('id'); // Group by ID
+    
+        // Decode the JSON cart field for each order
+        $data->transform(function ($orders) {
+            return $orders->map(function ($item) {
+                $item->cart = json_decode($item->cart);
+                return $item;
+            });
         });
+    
         return response()->json([
-            'message' => 'Created successfully',
+            'message' => 'Orders retrieved successfully',
             'data' => $data
         ]);
     }
+    
 }

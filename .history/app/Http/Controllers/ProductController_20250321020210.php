@@ -167,39 +167,12 @@ class ProductController extends Controller
         $data->total_price = $request->total_price;
         $data->user_id = $request->user_id;
         $data->order_id = $order_id;
-        $data->p_method = $request->p_method;
+        $data->p_method = $p_method;
         $data->save();
         return response()->json([
             'message' => 'Created successfully',
             $data
         ]);
     }
-    // get order
-    public function getOrder()
-    {
-        $data = OrderModel::all();
-        // cart should be json
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
-        return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
-        ]);
-    }
-    // get order by id
-    public function getOrderById($id)
-    {
-        // make it group by user id
-        $data = OrderModel::where('user_id', $id)->get();
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
-        return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
-        ]);
-    }
+
 }

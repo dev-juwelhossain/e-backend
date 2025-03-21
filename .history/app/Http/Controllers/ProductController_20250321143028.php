@@ -177,29 +177,58 @@ class ProductController extends Controller
     // get order
     public function getOrder()
     {
-        $data = OrderModel::all();
-        // cart should be json
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
+        // Retrieve all orders
+        $orders = OrderModel::orderBy('id', 'desc')->get();
+
+        // Group orders by user_id and merge carts
+        $groupedOrders = $orders->groupBy('user_id')->map(function ($userOrders) {
+            // Take the first order as base info (since user info is the same)
+            $mergedOrder = $userOrders->first();
+
+            // Merge all cart items
+            $mergedOrder->cart = $userOrders->flatMap(function ($order) {
+                return json_decode($order->cart, true); // Convert JSON cart to array
+            });
+
+            // Calculate total price by summing up individual order totals
+            $mergedOrder->total_price = $userOrders->sum('total_price');
+
+            return $mergedOrder;
+        })->values(); // Convert grouped data back into an array
+
         return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
+            'message' => 'Orders retrieved successfully',
+            'data' => $groupedOrders
         ]);
     }
+
     // get order by id
     public function getOrderById($id)
     {
-        // make it group by user id
-        $data = OrderModel::where('user_id', $id)->get();
-        $data->map(function ($item) {
-            $item->cart = json_decode($item->cart);
-            return $item;
-        });
+        // Retrieve orders for the given user ID
+        $orders = OrderModel::where('user_id', $id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Group orders by user_id and merge carts
+        $groupedOrders = $orders->groupBy('user_id')->map(function ($userOrders) {
+            // Take the first order as base info (since user info is the same)
+            $mergedOrder = $userOrders->first();
+
+            // Merge all cart items
+            $mergedOrder->cart = $userOrders->flatMap(function ($order) {
+                return json_decode($order->cart, true); // Convert JSON cart to array
+            });
+
+            // Calculate total price by summing up individual order totals
+            $mergedOrder->total_price = $userOrders->sum('total_price');
+
+            return $mergedOrder;
+        })->values(); // Convert grouped data back into an array
+
         return response()->json([
-            'message' => 'Created successfully',
-            'data' => $data
+            'message' => 'Orders retrieved successfully',
+            'data' => $groupedOrders
         ]);
     }
 }

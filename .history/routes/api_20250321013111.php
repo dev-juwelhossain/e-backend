@@ -36,7 +36,5 @@ Route::get('/products/{id}', [ProductController::class, 'getProductById']);
 // get order api
 Route::get('/order', [ProductController::class, 'getOrder']);
 Route::post('/order/add', [ProductController::class, 'addOrder']);
-// get order by id
-Route::get('/order/{id}', [ProductController::class, 'getOrderById']);
 Route::put('/order/update/{id}', [ProductController::class, 'updateOrder']);
 Route::delete('/order/delete/{id}', [ProductController::class, 'deleteOrder']);
