@@ -56,6 +56,7 @@ class ProductController extends Controller
         $data->regular_price = $request->regular_price;
         $data->selling_price  = $request->selling_price;
         $data->product_description = $request->product_description;
+        $data->product_short_description = $request->product_short_description;
         if ($request->file('product_image')) {
             $file = $request->file('product_image');
             $filename = date('Ymdhi') . $file->getClientOriginalName();
