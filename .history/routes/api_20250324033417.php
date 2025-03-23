@@ -46,8 +46,4 @@ Route::delete('/order/delete/{id}', [ProductController::class, 'deleteOrder']);
 Route::post('/order/confirm/{id}', [ProductController::class, 'confirmOrder']);
 // get order by date range
 Route::get('/order/date/{from}/{to}', [ProductController::class, 'getOrderByDate']);
-// get product by sub category
-Route::get('/products/sub-category/{sub_category}', [ProductController::class, 'getSubCategoryProduct']);
-// get product by type
-Route::get('/products/type/{type}', [ProductController::class, 'getProductByType']);
 

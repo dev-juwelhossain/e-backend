@@ -23,9 +23,6 @@ return new class extends Migration
             $table->string('product_image')->nullable();
             $table->string('image_gallary')->nullable();
             $table->string('select_sub_category')->nullable();
-            $table->string('color')->nullable();
-            $table->string('size')->nullable();
-            $table->string('type')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });

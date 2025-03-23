@@ -79,10 +79,6 @@ class ProductController extends Controller
         $data->selling_price = $request->selling_price;
         $data->product_description = $request->product_description;
         $data->p_short_des = $request->p_short_des;
-        $data->select_sub_category = $request->select_sub_category;
-        $data->color = $request->color;
-        $data->size = $request->size;
-        $data->type = $request->type;
 
         // Handle product image upload
         if ($request->hasFile('product_image')) {
@@ -197,33 +193,6 @@ class ProductController extends Controller
     public function getCategory()
     {
         $data = CategoryModel::all();
-        return response()->json([
-            'message' => 'Created successfully',
-            $data
-        ]);
-    }
-    // get product by sub category
-    public function getSubCategoryProduct($sub_category)
-    {
-        $data = ProductModel::where('select_sub_category', $sub_category)->get();
-        return response()->json([
-            'message' => 'Created successfully',
-            $data
-        ]);
-    }
-    // get product by type
-    public function getProductByType($type)
-    {
-        $data = ProductModel::where('type', $type)->get();
-        return response()->json([
-            'message' => 'Created successfully',
-            $data
-        ]);
-    }
-    // get sub category
-    public function getSubCategory()
-    {
-        $data = SubCategoryModel::all();
         return response()->json([
             'message' => 'Created successfully',
             $data

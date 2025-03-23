@@ -25,7 +25,6 @@ Route::post('/sub-cat/add', [ProductController::class, 'subCategory']);
 Route::put('/category/update/{id}', [ProductController::class, 'updateCategory']); // Update
 Route::delete('/category/delete/{id}', [ProductController::class, 'deleteCategory']); // Delete
 Route::get('/products/categories', [ProductController::class, 'getCategory']);
-Route::get('/products/sub-categories', [ProductController::class, 'getSubCategory']);
 
 // add product
 Route::post('/product/add', [ProductController::class, 'addProduct']);
@@ -46,8 +45,4 @@ Route::delete('/order/delete/{id}', [ProductController::class, 'deleteOrder']);
 Route::post('/order/confirm/{id}', [ProductController::class, 'confirmOrder']);
 // get order by date range
 Route::get('/order/date/{from}/{to}', [ProductController::class, 'getOrderByDate']);
-// get product by sub category
-Route::get('/products/sub-category/{sub_category}', [ProductController::class, 'getSubCategoryProduct']);
-// get product by type
-Route::get('/products/type/{type}', [ProductController::class, 'getProductByType']);
 
