@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('regular_price')->nullable();
             $table->string('selling_price')->nullable();
             $table->string('product_description')->nullable();
+            $table->string('p_short_des')->nullable();
             $table->string('product_image')->nullable();
+            $table->string('image_gallary')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });
