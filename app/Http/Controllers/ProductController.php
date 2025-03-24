@@ -32,13 +32,12 @@ class ProductController extends Controller
 
         // validate unique category
         $request->validate([
-            'name' => 'nullable',
-            'select_category' => 'nullable',
+            'name' => 'required|unique:sub_category_models',
         ]);
 
         $data = new SubCategoryModel();
         $data->name = $request->name;
-        $data->select_category = $request->select_category;
+        // $data->select_category = $request->select_category;
         $data->save();
         return response()->json([
             'message' => 'Created successfully',
@@ -58,10 +57,31 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Category updated successfully']);
     }
+    // update category
+    public function updateSubCategory(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:sub_category_models,name,' . $id,
+        ]);
+
+        $category = SubCategoryModel::findOrFail($id);
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json(['message' => 'Category updated successfully']);
+    }
     // delete category
     public function deleteCategory($id)
     {
         $category = CategoryModel::findOrFail($id);
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully']);
+    }
+    // delete category
+    public function deleteSubCategory($id)
+    {
+        $category = SubCategoryModel::findOrFail($id);
         $category->delete();
 
         return response()->json(['message' => 'Category deleted successfully']);
@@ -145,6 +165,10 @@ class ProductController extends Controller
         $data->selling_price  = $request->selling_price;
         $data->product_description = $request->product_description;
         $data->p_short_des = $request->p_short_des;
+        $data->select_sub_category = $request->select_sub_category;
+        $data->color = $request->color;
+        $data->size = $request->size;
+        $data->type = $request->type;
         if ($request->file('product_image')) {
             $file = $request->file('product_image');
             $filename = date('Ymdhi') . $file->getClientOriginalName();
@@ -301,6 +325,8 @@ class ProductController extends Controller
         $data->user_id = $request->user_id;
         $data->order_id = $order_id;
         $data->p_method = $request->p_method;
+        $data->size = $request->size;
+        $data->color = $request->color;
         $data->save();
         return response()->json([
             'message' => 'Created successfully',
@@ -372,5 +398,21 @@ class ProductController extends Controller
             'message' => 'Orders fetched successfully',
             'data' => $data
         ]);
+    }
+    public function getSubCategoryByCategory($name)
+    {
+        // Find all products that match the category name
+        $products = ProductModel::where('select_category', $name)->get();
+
+        // Check if any products exist for the given category
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'No products found for this category'], 404);
+        }
+
+        // Extract the unique subcategories from the filtered products
+        $subCategories = $products->pluck('select_sub_category')->unique();
+
+        // Return the unique subcategories
+        return response()->json($subCategories);
     }
 }

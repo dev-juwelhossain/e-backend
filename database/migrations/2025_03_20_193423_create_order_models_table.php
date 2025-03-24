@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('user_id')->nullable();
             $table->string('order_id')->nullable();
             $table->string('p_method')->nullable();
+            $table->string('size')->nullable();
+            $table->string('color')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });
